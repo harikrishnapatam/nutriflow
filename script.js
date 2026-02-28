@@ -1,4 +1,4 @@
-/* ── MEALS DATA ──────────────────────────────────────────── */
+/* NutriFlow v2 – nutriflow-eta.vercel.app */
 const meals = [
     { emoji: '🥣', bg: '#1a1500', name: 'Overnight Oats', desc: 'Rolled oats with chia seeds, almond milk, and mixed berries for a fiber-packed start.', time: 'breakfast', kcal: 380, protein: 14, carbs: 62, fat: 9 },
     { emoji: '🍳', bg: '#1a1000', name: 'Veggie Egg Scramble', desc: 'Whole eggs with spinach, bell peppers, and feta cheese — high protein, low carb.', time: 'breakfast', kcal: 310, protein: 22, carbs: 10, fat: 20 },

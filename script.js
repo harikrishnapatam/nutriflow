@@ -1,4 +1,4 @@
-/* NutriFlow v3 */
+/* NutriFlow v4 - 2026-02-28 */
 
 /* ── MEALS DATA ────────────────────────────────────────────── */
 const meals = [

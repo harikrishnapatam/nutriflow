@@ -72,11 +72,16 @@ const ringObserver = new IntersectionObserver((entries) => {
 }, { threshold: 0.4 });
 document.querySelector('.ring-chart-wrap') && ringObserver.observe(document.querySelector('.ring-chart-wrap'));
 
-/* ── SCROLL ANIMATIONS ───────────────────────────────────── */
+/* ── SCROLL ANIMATIONS ──────────────────────────────────── */
 const animObserver = new IntersectionObserver((entries) => {
     entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); animObserver.unobserve(e.target); } });
-}, { threshold: 0.1 });
+}, { threshold: 0 });
 document.querySelectorAll('[data-anim]').forEach(el => animObserver.observe(el));
+
+// Fallback: show all after 1.5s in case observer misses anything
+setTimeout(() => {
+    document.querySelectorAll('[data-anim]').forEach(el => el.classList.add('visible'));
+}, 1500);
 
 /* ── BACK TO TOP ─────────────────────────────────────────── */
 const backToTop = document.getElementById('backToTop');
@@ -84,17 +89,20 @@ window.addEventListener('scroll', () => {
     backToTop?.classList.toggle('visible', window.scrollY > 400);
 });
 
-/* ── HAMBURGER MENU ──────────────────────────────────────── */
+/* ── HAMBURGER MENU ──────────────────────────────────── */
 const hamburger = document.getElementById('hamburger');
 const mobileMenu = document.getElementById('mobileMenu');
 hamburger?.addEventListener('click', () => {
-    hamburger.classList.toggle('open');
-    mobileMenu.classList.toggle('open');
+    const isOpen = mobileMenu.classList.toggle('open');
+    hamburger.classList.toggle('open', isOpen);
+    // Ensure nav doesn't clip the menu
+    document.getElementById('navbar').style.overflow = isOpen ? 'visible' : '';
 });
 document.querySelectorAll('.mobile-link').forEach(link => {
     link.addEventListener('click', () => {
         hamburger.classList.remove('open');
         mobileMenu.classList.remove('open');
+        document.getElementById('navbar').style.overflow = '';
     });
 });
 
@@ -212,7 +220,7 @@ analyseBtn.addEventListener('click', async () => {
         analyseBtnText.textContent = "Analysing...";
 
         // Compress image before sending (mobile photos can be 5-10MB)
-        const dataUrl = await compressImage(selectedFile, 900, 0.75);
+        const dataUrl = await compressImage(selectedFile, 600, 0.65);
         const base64 = dataUrl.split(',')[1];
 
         const prompt = `You are a nutrition expert. Analyse this food image and respond ONLY with a valid JSON object — no extra text, no markdown fences.

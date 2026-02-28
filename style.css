@@ -4809,3 +4809,37 @@ a {
     text-transform: uppercase;
     letter-spacing: .05em;
 }
+
+/* -- SPACING FIXES --------------------------------------- */
+.section {
+    padding: 60px 0 !important;
+}
+
+.section-header {
+    margin-bottom: 32px !important;
+}
+
+@media (max-width: 640px) {
+    .section {
+        padding: 44px 0 !important;
+    }
+
+    .section-header {
+        margin-bottom: 24px !important;
+    }
+
+    .hero {
+        padding-top: 90px !important;
+        padding-bottom: 48px !important;
+        min-height: unset !important;
+    }
+
+    .macros-grid,
+    .tips-grid {
+        gap: 14px !important;
+    }
+
+    .meals-grid {
+        gap: 14px !important;
+    }
+}

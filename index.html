@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description"
+        content="NutriFlow &ndash; Your personal nutrition guide for a healthier lifestyle. Track macros, discover balanced meals, and calculate your daily calorie needs." />
+    <title>NutriFlow &ndash; Eat Smart, Live Better</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet" />
+    <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+
+    <!-- NAV -->
+    <nav class="nav" id="navbar">
+        <div class="nav-inner">
+            <a href="#hero" class="nav-logo">&#x1F966; NutriFlow</a>
+            <ul class="nav-links">
+                <li><a href="#macros">Macros</a></li>
+                <li><a href="#meals">Meals</a></li>
+                <li><a href="#tips">Tips</a></li>
+                <li><a href="#calculator">Calculator</a></li>
+            </ul>
+            <button class="nav-hamburger" id="hamburger" aria-label="Toggle menu">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+        <div class="nav-mobile-menu" id="mobileMenu">
+            <a href="#macros" class="mobile-link">Macros</a>
+            <a href="#meals" class="mobile-link">Meals</a>
+            <a href="#tips" class="mobile-link">Tips</a>
+            <a href="#calculator" class="mobile-link">Calculator</a>
+        </div>
+    </nav>
+
+    <!-- HERO -->
+    <section class="hero" id="hero">
+        <div class="hero-blur blur-1"></div>
+        <div class="hero-blur blur-2"></div>
+        <div class="hero-blur blur-3"></div>
+        <div class="hero-content">
+            <span class="hero-badge">&#x1F33F; Science-backed nutrition</span>
+            <h1 class="hero-title">Eat Smart.<br /><span class="gradient-text">Live Better.</span></h1>
+            <p class="hero-sub">Your complete guide to balanced nutrition, macro tracking, and building sustainable
+                healthy habits &ndash; one meal at a time.</p>
+            <div class="hero-btns">
+                <a href="#calculator" class="btn btn-primary">Calculate My Calories &#x2192;</a>
+                <button class="btn btn-upload" id="openUploadModal">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                        <polyline points="17 8 12 3 7 8" />
+                        <line x1="12" y1="3" x2="12" y2="15" />
+                    </svg>
+                    Analyse My Food
+                </button>
+                <a href="#meals" class="btn btn-ghost">Explore Meals</a>
+            </div>
+            <div class="hero-stats">
+                <div class="stat"><span class="stat-num">50+</span><span class="stat-label">Healthy Foods</span></div>
+                <div class="stat-divider"></div>
+                <div class="stat"><span class="stat-num">3</span><span class="stat-label">Core Macros</span></div>
+                <div class="stat-divider"></div>
+                <div class="stat"><span class="stat-num">100%</span><span class="stat-label">Free to Use</span></div>
+            </div>
+        </div>
+        <div class="hero-visual">
+            <div class="macro-rings-vis">
+                <!-- Animated concentric macro ring chart -->
+                <div class="ring-chart-wrap">
+                    <svg class="ring-svg" viewBox="0 0 220 220" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <defs>
+                            <linearGradient id="gc" x1="0" y1="0" x2="1" y2="1">
+                                <stop offset="0%" stop-color="#00c97a" />
+                                <stop offset="100%" stop-color="#3dffa0" />
+                            </linearGradient>
+                            <linearGradient id="gp" x1="0" y1="0" x2="1" y2="1">
+                                <stop offset="0%" stop-color="#00aaff" />
+                                <stop offset="100%" stop-color="#00d4ff" />
+                            </linearGradient>
+                            <linearGradient id="gf" x1="0" y1="0" x2="1" y2="1">
+                                <stop offset="0%" stop-color="#ffa500" />
+                                <stop offset="100%" stop-color="#ffc300" />
+                            </linearGradient>
+                        </defs>
+                        <!-- Tracks -->
+                        <circle cx="110" cy="110" r="95" class="ring-track" />
+                        <circle cx="110" cy="110" r="70" class="ring-track" />
+                        <circle cx="110" cy="110" r="46" class="ring-track" />
+                        <!-- Carbs outer ring (50%) -->
+                        <circle cx="110" cy="110" r="95" class="ring-fill ring-carbs" stroke-dasharray="597"
+                            stroke-dashoffset="597" stroke="url(#gc)" stroke-width="10" stroke-linecap="round"
+                            transform="rotate(-90 110 110)" />
+                        <!-- Protein middle ring (30%) -->
+                        <circle cx="110" cy="110" r="70" class="ring-fill ring-protein" stroke-dasharray="440"
+                            stroke-dashoffset="440" stroke="url(#gp)" stroke-width="10" stroke-linecap="round"
+                            transform="rotate(-90 110 110)" />
+                        <!-- Fat inner ring (20%) -->
+                        <circle cx="110" cy="110" r="46" class="ring-fill ring-fat" stroke-dasharray="289"
+                            stroke-dashoffset="289" stroke="url(#gf)" stroke-width="10" stroke-linecap="round"
+                            transform="rotate(-90 110 110)" />
+                    </svg>
+                    <div class="ring-center">
+                        <span class="ring-kcal" id="ringKcal">2,000</span>
+                        <span class="ring-label">kcal / day</span>
+                    </div>
+                </div>
+                <!-- Legend -->
+                <div class="ring-legend">
+                    <div class="ring-leg-row">
+                        <span class="ring-dot" style="background:linear-gradient(135deg,#00c97a,#3dffa0)"></span>
+                        <div class="ring-leg-info">
+                            <span class="ring-leg-name">Carbohydrates</span>
+                            <span class="ring-leg-pct">50%</span>
+                        </div>
+                        <span class="ring-leg-g">250g</span>
+                    </div>
+                    <div class="ring-leg-row">
+                        <span class="ring-dot" style="background:linear-gradient(135deg,#00aaff,#00d4ff)"></span>
+                        <div class="ring-leg-info">
+                            <span class="ring-leg-name">Protein</span>
+                            <span class="ring-leg-pct">30%</span>
+                        </div>
+                        <span class="ring-leg-g">150g</span>
+                    </div>
+                    <div class="ring-leg-row">
+                        <span class="ring-dot" style="background:linear-gradient(135deg,#ffa500,#ffc300)"></span>
+                        <div class="ring-leg-info">
+                            <span class="ring-leg-name">Healthy Fats</span>
+                            <span class="ring-leg-pct">20%</span>
+                        </div>
+                        <span class="ring-leg-g">44g</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- MACROS -->
+    <section class="section" id="macros">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-badge">&#x1F52C; The Big Three</span>
+                <h2 class="section-title">Understanding <span class="gradient-text">Macronutrients</span></h2>
+                <p class="section-sub">Every food you eat is made up of three core building blocks. Learn how each fuels
+                    your body differently.</p>
+            </div>
+            <div class="macros-grid">
+
+                <div class="macro-card macro-protein" data-anim="fade-up">
+                    <div class="macro-icon-wrap">
+                        <span class="macro-icon">&#x1F4AA;</span>
+                    </div>
+                    <div class="macro-tag">4 kcal / g</div>
+                    <h3>Protein</h3>
+                    <p>Builds and repairs muscle tissue, supports immune function, and keeps you full longer. Aim for
+                        <strong>0.8&ndash;1.6g per kg</strong> of body weight daily.
+                    </p>
+                    <div class="macro-bar-wrap">
+                        <div class="macro-bar-label"><span>Daily Recommendation</span><span>30%</span></div>
+                        <div class="macro-bar">
+                            <div class="macro-fill fill-protein" style="width:0%"></div>
+                        </div>
+                    </div>
+                    <div class="macro-foods">
+                        <span class="food-chip">&#x1F357; Chicken</span>
+                        <span class="food-chip">&#x1F41F; Salmon</span>
+                        <span class="food-chip">&#x1F95A; Eggs</span>
+                        <span class="food-chip">&#x1FAB8; Lentils</span>
+                    </div>
+                </div>
+
+                <div class="macro-card macro-carbs" data-anim="fade-up" style="animation-delay:.1s">
+                    <div class="macro-icon-wrap">
+                        <span class="macro-icon">&#x26A1;</span>
+                    </div>
+                    <div class="macro-tag">4 kcal / g</div>
+                    <h3>Carbohydrates</h3>
+                    <p>Your body's primary energy source. Opt for complex carbs to maintain stable blood sugar and
+                        sustained energy throughout the day.</p>
+                    <div class="macro-bar-wrap">
+                        <div class="macro-bar-label"><span>Daily Recommendation</span><span>50%</span></div>
+                        <div class="macro-bar">
+                            <div class="macro-fill fill-carbs" style="width:0%"></div>
+                        </div>
+                    </div>
+                    <div class="macro-foods">
+                        <span class="food-chip">&#x1F33E; Oats</span>
+                        <span class="food-chip">&#x1F360; Sweet Potato</span>
+                        <span class="food-chip">&#x1F35A; Brown Rice</span>
+                        <span class="food-chip">&#x1FAD0; Berries</span>
+                    </div>
+                </div>
+
+                <div class="macro-card macro-fat" data-anim="fade-up" style="animation-delay:.2s">
+                    <div class="macro-icon-wrap">
+                        <span class="macro-icon">&#x1F951;</span>
+                    </div>
+                    <div class="macro-tag">9 kcal / g</div>
+                    <h3>Healthy Fats</h3>
+                    <p>Essential for hormone production, brain health, and absorbing fat-soluble vitamins. Focus on
+                        unsaturated sources for heart health.</p>
+                    <div class="macro-bar-wrap">
+                        <div class="macro-bar-label"><span>Daily Recommendation</span><span>20%</span></div>
+                        <div class="macro-bar">
+                            <div class="macro-fill fill-fat" style="width:0%"></div>
+                        </div>
+                    </div>
+                    <div class="macro-foods">
+                        <span class="food-chip">&#x1F951; Avocado</span>
+                        <span class="food-chip">&#x1FAD2; Olive Oil</span>
+                        <span class="food-chip">&#x1F95C; Almonds</span>
+                        <span class="food-chip">&#x1F41F; Tuna</span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- MEALS -->
+    <section class="section section-dark" id="meals">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-badge">&#x1F37D;&#xFE0F; Balanced Plates</span>
+                <h2 class="section-title">Power-Packed <span class="gradient-text">Meal Ideas</span></h2>
+                <p class="section-sub">Simple, nutritious meals that fuel your body and delight your taste buds.</p>
+            </div>
+            <div class="meal-filter">
+                <button class="filter-btn active" data-filter="all">All</button>
+                <button class="filter-btn" data-filter="breakfast">Breakfast</button>
+                <button class="filter-btn" data-filter="lunch">Lunch</button>
+                <button class="filter-btn" data-filter="dinner">Dinner</button>
+                <button class="filter-btn" data-filter="snack">Snack</button>
+            </div>
+            <div class="meals-grid" id="mealsGrid">
+                <!-- Injected by JS -->
+            </div>
+        </div>
+    </section>
+
+    <!-- TIPS -->
+    <section class="section" id="tips">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-badge">&#x1F4A1; Pro Tips</span>
+                <h2 class="section-title">Nutrition <span class="gradient-text">Habits That Stick</span></h2>
+                <p class="section-sub">Small consistent changes beat drastic overhauls every time.</p>
+            </div>
+            <div class="tips-grid">
+                <div class="tip-card" data-anim="fade-up">
+                    <div class="tip-num">01</div>
+                    <div class="tip-emoji">&#x1F4A7;</div>
+                    <h3>Hydrate First</h3>
+                    <p>Drink at least 500ml of water upon waking. Dehydration is often mistaken for hunger, leading to
+                        unnecessary snacking.</p>
+                </div>
+                <div class="tip-card" data-anim="fade-up" style="animation-delay:.08s">
+                    <div class="tip-num">02</div>
+                    <div class="tip-emoji">&#x1F3A8;</div>
+                    <h3>Eat the Rainbow</h3>
+                    <p>Aim for 5+ different colored fruits and vegetables daily. Each color represents unique
+                        phytonutrients and antioxidants.</p>
+                </div>
+                <div class="tip-card" data-anim="fade-up" style="animation-delay:.16s">
+                    <div class="tip-num">03</div>
+                    <div class="tip-emoji">&#x1F37D;&#xFE0F;</div>
+                    <h3>Mindful Eating</h3>
+                    <p>Eat slowly and without screens. It takes 20 minutes for your brain to register fullness &ndash;
+                        slow
+                        down and savor every bite.</p>
+                </div>
+                <div class="tip-card" data-anim="fade-up" style="animation-delay:.24s">
+                    <div class="tip-num">04</div>
+                    <div class="tip-emoji">&#x1F9E9;</div>
+                    <h3>Prep Ahead</h3>
+                    <p>Spend 1&ndash;2 hours on weekends batch cooking grains, proteins, and veggies. Healthy eating is
+                        easy
+                        when the food is ready.</p>
+                </div>
+                <div class="tip-card" data-anim="fade-up" style="animation-delay:.32s">
+                    <div class="tip-num">05</div>
+                    <div class="tip-emoji">&#x1F555;</div>
+                    <h3>Time Your Meals</h3>
+                    <p>Eat protein-rich meals post-workout within 2 hours to maximize muscle protein synthesis and
+                        recovery.</p>
+                </div>
+                <div class="tip-card" data-anim="fade-up" style="animation-delay:.40s">
+                    <div class="tip-num">06</div>
+                    <div class="tip-emoji">&#x1F4D6;</div>
+                    <h3>Read Labels</h3>
+                    <p>Scan ingredient lists. If the first 3 ingredients are sugars or you can't pronounce them, put it
+                        back on the shelf.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CALCULATOR -->
+    <section class="section section-dark" id="calculator">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-badge">&#x1F522; Daily Needs</span>
+                <h2 class="section-title">Calorie <span class="gradient-text">Calculator</span></h2>
+                <p class="section-sub">Find out exactly how many calories your body needs each day.</p>
+            </div>
+            <div class="calc-wrapper">
+                <div class="calc-form">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="calcAge">Age</label>
+                            <input type="number" id="calcAge" placeholder="25" min="10" max="100" />
+                        </div>
+                        <div class="form-group">
+                            <label>Gender</label>
+                            <div class="gender-toggle">
+                                <button class="gender-btn active" id="genderMale" data-gender="male">&#x2642;
+                                    Male</button>
+                                <button class="gender-btn" id="genderFemale" data-gender="female">&#x2640;
+                                    Female</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="calcWeight">Weight (kg)</label>
+                            <input type="number" id="calcWeight" placeholder="70" min="20" max="300" />
+                        </div>
+                        <div class="form-group">
+                            <label for="calcHeight">Height (cm)</label>
+                            <input type="number" id="calcHeight" placeholder="175" min="100" max="250" />
+                        </div>
+                    </div>
+                    <div class="form-group full-width">
+                        <label for="calcActivity">Activity Level</label>
+                        <select id="calcActivity">
+                            <option value="1.2">&#x1F634; Sedentary (little/no exercise)</option>
+                            <option value="1.375">&#x1F6B6; Lightly active (1&ndash;3 days/week)</option>
+                            <option value="1.55" selected>&#x1F3C3; Moderately active (3&ndash;5 days/week)</option>
+                            <option value="1.725">&#x1F3CB;&#xFE0F; Very active (6&ndash;7 days/week)</option>
+                            <option value="1.9">&#x26A1; Extra active (physical job + exercise)</option>
+                        </select>
+                    </div>
+                    <div class="form-group full-width">
+                        <label>Goal</label>
+                        <div class="goal-tabs">
+                            <button class="goal-tab active" data-goal="maintain">&#x2696;&#xFE0F; Maintain</button>
+                            <button class="goal-tab" data-goal="lose">&#x1F4C9; Lose Weight</button>
+                            <button class="goal-tab" data-goal="gain">&#x1F4C8; Gain Muscle</button>
+                        </div>
+                    </div>
+                    <button class="btn btn-primary btn-full" id="calcBtn">Calculate &#x2192;</button>
+                </div>
+                <div class="calc-result" id="calcResult">
+                    <div class="result-placeholder">
+                        <span class="result-icon">&#x1F957;</span>
+                        <p>Fill in your details and hit <strong>Calculate</strong> to see your personalized nutrition
+                            plan.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-top">
+                <div class="footer-brand">
+                    <a href="#hero" class="nav-logo">&#x1F966; NutriFlow</a>
+                    <p>Science-backed nutrition guidance to help you build lasting healthy habits.</p>
+                </div>
+                <div class="footer-links">
+                    <div class="footer-col">
+                        <h4>Learn</h4>
+                        <a href="#macros">Macronutrients</a>
+                        <a href="#meals">Meal Ideas</a>
+                        <a href="#tips">Nutrition Tips</a>
+                    </div>
+                    <div class="footer-col">
+                        <h4>Tools</h4>
+                        <a href="#calculator">Calorie Calculator</a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 NutriFlow. For informational purposes only. Consult a registered dietitian for
+                    personalized
+                    advice.</p>
+            </div>
+        </div>
+    </footer>
+
+    <a href="#hero" class="back-to-top" id="backToTop" aria-label="Back to top">&#x2191;</a>
+
+    <!-- AI UPLOAD MODAL -->
+    <div class="modal-overlay" id="uploadModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+        <div class="modal">
+            <div class="modal-header">
+                <div>
+                    <h2 id="modalTitle">&#x1F916; AI Nutrition Analyser</h2>
+                    <!-- Subtitle removed per user request -->
+                </div>
+                <button class="modal-close" id="closeModal" aria-label="Close">&#x2715;</button>
+            </div>
+
+            <!-- Drop Zone -->
+            <div class="drop-zone" id="dropZone">
+                <input type="file" id="fileInput" accept="image/*" hidden />
+                <div class="drop-inner" id="dropInner">
+                    <div class="drop-icon">&#x1F4F7;</div>
+                    <p class="drop-title">Drag &amp; drop your food photo here</p>
+                    <p class="drop-sub">or <button class="drop-browse" id="browseBtn">browse files</button></p>
+                    <p class="drop-formats">JPG, PNG, WEBP, HEIC &ndash; max 10 MB</p>
+                </div>
+                <img class="drop-preview" id="dropPreview" alt="Preview" />
+            </div>
+
+            <!-- Action -->
+            <button class="btn btn-primary btn-full" id="analyseBtn" disabled>
+                <span id="analyseBtnText">Analyse Nutrition &#x2192;</span>
+                <span class="spinner" id="analyseSpinner" hidden></span>
+            </button>
+
+            <!-- Results -->
+            <div class="ai-result" id="aiResult" hidden>
+                <div class="ai-result-header">
+                    <span class="ai-result-icon">&#x2728;</span>
+                    <h3>Analysis Result</h3>
+                </div>
+                <div class="ai-result-body" id="aiResultBody"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js?v=2"></script>
+</body>
+
+</html>

@@ -19,6 +19,30 @@ const analyseBtnText = document.getElementById('analyseBtnText');
 
 let selectedFile = null;
 
+/* ── IMAGE COMPRESSION ───────────────────────────────────── */
+function compressImage(file, maxPx = 900, quality = 0.75) {
+    return new Promise((resolve) => {
+        const img = new Image();
+        const url = URL.createObjectURL(file);
+        img.onload = () => {
+            let { width, height } = img;
+            // Scale down if larger than maxPx
+            if (width > maxPx || height > maxPx) {
+                if (width > height) { height = Math.round(height * maxPx / width); width = maxPx; }
+                else { width = Math.round(width * maxPx / height); height = maxPx; }
+            }
+            const canvas = document.createElement('canvas');
+            canvas.width = width;
+            canvas.height = height;
+            canvas.getContext('2d').drawImage(img, 0, 0, width, height);
+            URL.revokeObjectURL(url);
+            resolve(canvas.toDataURL('image/jpeg', quality));
+        };
+        img.src = url;
+    });
+}
+
+
 /* ── AI ANALYSIS ─────────────────────────────────────────── */
 analyseBtn.addEventListener('click', async () => {
     if (!selectedFile) return;
@@ -28,13 +52,10 @@ analyseBtn.addEventListener('click', async () => {
         analyseSpinner.hidden = false;
         analyseBtnText.textContent = "Analysing...";
 
-        const reader = new FileReader();
-        const base64Promise = new Promise((resolve) => {
-            reader.onload = () => resolve(reader.result.split(',')[1]);
-            reader.readAsDataURL(selectedFile);
-        });
+        // Compress image before sending (mobile photos can be 5-10MB)
+        const dataUrl = await compressImage(selectedFile, 900, 0.75);
+        const base64 = dataUrl.split(',')[1];
 
-        const base64 = await base64Promise;
         const prompt = `You are a nutrition expert. Analyse this food image and respond ONLY with a valid JSON object — no extra text, no markdown fences.
 
 Format:
@@ -50,14 +71,14 @@ Format:
 
 If you are not confident about the dish, set confidence to "low" and use your best estimate. Keep ingredients to 4–5 max. Be concise.`;
 
-        const dataUrl = `data:${selectedFile.type || 'image/jpeg'};base64,${base64}`;
+        const dataUrl2 = `data:image/jpeg;base64,${base64}`;
 
         const resp = await fetch('/api/analyze', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
                 prompt: prompt,
-                image_base64: dataUrl
+                image_base64: dataUrl2
             })
         });
 
@@ -191,3 +212,15 @@ function handleFile(file) {
         reader.readAsDataURL(file);
     }
 }
+
+/* ── SCROLL ANIMATIONS ───────────────────────────────────── */
+const observer = new IntersectionObserver((entries) => {
+    entries.forEach(el => {
+        if (el.isIntersecting) {
+            el.target.classList.add('visible');
+            observer.unobserve(el.target); // animate once only
+        }
+    });
+}, { threshold: 0.1 });
+
+document.querySelectorAll('[data-anim]').forEach(el => observer.observe(el));

@@ -4,8 +4,167 @@ const meals = [
     { emoji: '🍳', bg: '#1a1000', name: 'Veggie Egg Scramble', desc: 'Whole eggs with spinach, bell peppers, and feta cheese — high protein, low carb.', time: 'breakfast', kcal: 310, protein: 22, carbs: 10, fat: 20 },
     { emoji: '🥑', bg: '#0d1a0d', name: 'Avocado Toast', desc: 'Sourdough topped with smashed avocado, poached egg, and chilli flakes.', time: 'breakfast', kcal: 420, protein: 18, carbs: 44, fat: 21 },
     { emoji: '🍗', bg: '#0d1200', name: 'Grilled Chicken Bowl', desc: 'Juicy grilled chicken over brown rice with steamed broccoli and teriyaki glaze.', time: 'lunch', kcal: 520, protein: 42, carbs: 55, fat: 11 },
-    { emoji: '🥗', bg: '#0a1a10', name: 'Salmon Power Salad', desc: 'Baked salmon on mixed greens with quinoa, cucumber, and lemon vinaigrette.', time: 'lunch', kcal: 480, protein: 34, carbs: 22, fat: 28 }
+    { emoji: '🥗', bg: '#0a1a10', name: 'Salmon Power Salad', desc: 'Baked salmon on mixed greens with quinoa, cucumber, and lemon vinaigrette.', time: 'lunch', kcal: 480, protein: 34, carbs: 22, fat: 28 },
+    { emoji: '🍜', bg: '#0a0f1a', name: 'Veggie Noodle Soup', desc: 'Rice noodles in a light miso broth with bok choy, mushrooms, and tofu.', time: 'dinner', kcal: 340, protein: 18, carbs: 52, fat: 7 },
+    { emoji: '🥩', bg: '#1a0d0d', name: 'Grilled Salmon & Veg', desc: 'Pan-seared salmon fillet with roasted asparagus and cherry tomatoes.', time: 'dinner', kcal: 460, protein: 38, carbs: 12, fat: 28 },
+    { emoji: '🍎', bg: '#1a0d10', name: 'Apple & Almond Snack', desc: 'Sliced apple with a tablespoon of almond butter — natural sugars and healthy fats.', time: 'snack', kcal: 190, protein: 4, carbs: 24, fat: 10 },
+    { emoji: '🧀', bg: '#1a1500', name: 'Cottage Cheese Bowl', desc: 'Low-fat cottage cheese topped with pineapple chunks and a drizzle of honey.', time: 'snack', kcal: 160, protein: 18, carbs: 14, fat: 3 }
 ];
+
+/* ── RENDER MEAL CARDS ───────────────────────────────────── */
+const mealsGrid = document.getElementById('mealsGrid');
+
+function renderMeals(filter = 'all') {
+    mealsGrid.innerHTML = '';
+    meals.filter(m => filter === 'all' || m.time === filter).forEach(m => {
+        const card = document.createElement('div');
+        card.className = 'meal-card';
+        card.innerHTML = `
+            <div class="meal-emoji-wrap" style="background:${m.bg}">
+                <span style="font-size:3.5rem">${m.emoji}</span>
+            </div>
+            <div class="meal-body">
+                <span class="meal-time tag-${m.time}">${m.time}</span>
+                <h3>${m.name}</h3>
+                <p>${m.desc}</p>
+                <div class="meal-macros">
+                    <div class="meal-macro"><span class="meal-macro-val">${m.kcal}</span><span class="meal-macro-label">kcal</span></div>
+                    <div class="meal-macro"><span class="meal-macro-val" style="color:#3dffa0">${m.protein}g</span><span class="meal-macro-label">protein</span></div>
+                    <div class="meal-macro"><span class="meal-macro-val" style="color:#00d4ff">${m.carbs}g</span><span class="meal-macro-label">carbs</span></div>
+                    <div class="meal-macro"><span class="meal-macro-val" style="color:#ffc300">${m.fat}g</span><span class="meal-macro-label">fat</span></div>
+                </div>
+            </div>`;
+        mealsGrid.appendChild(card);
+    });
+}
+renderMeals();
+
+document.querySelectorAll('.filter-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        renderMeals(btn.dataset.filter);
+    });
+});
+
+/* ── MACRO BAR ANIMATIONS ────────────────────────────────── */
+const macroObserver = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+        if (e.isIntersecting) {
+            e.target.querySelector('.fill-protein')?.style.setProperty('width', '30%');
+            e.target.querySelector('.fill-carbs')?.style.setProperty('width', '50%');
+            e.target.querySelector('.fill-fat')?.style.setProperty('width', '20%');
+        }
+    });
+}, { threshold: 0.3 });
+document.querySelector('.macros-grid') && macroObserver.observe(document.querySelector('.macros-grid'));
+
+/* ── RING CHART ANIMATION ────────────────────────────────── */
+const ringObserver = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+        if (e.isIntersecting) {
+            e.target.querySelector('.ring-carbs')?.classList.add('animated');
+            e.target.querySelector('.ring-protein')?.classList.add('animated');
+            e.target.querySelector('.ring-fat')?.classList.add('animated');
+            ringObserver.unobserve(e.target);
+        }
+    });
+}, { threshold: 0.4 });
+document.querySelector('.ring-chart-wrap') && ringObserver.observe(document.querySelector('.ring-chart-wrap'));
+
+/* ── SCROLL ANIMATIONS ───────────────────────────────────── */
+const animObserver = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); animObserver.unobserve(e.target); } });
+}, { threshold: 0.1 });
+document.querySelectorAll('[data-anim]').forEach(el => animObserver.observe(el));
+
+/* ── BACK TO TOP ─────────────────────────────────────────── */
+const backToTop = document.getElementById('backToTop');
+window.addEventListener('scroll', () => {
+    backToTop?.classList.toggle('visible', window.scrollY > 400);
+});
+
+/* ── HAMBURGER MENU ──────────────────────────────────────── */
+const hamburger = document.getElementById('hamburger');
+const mobileMenu = document.getElementById('mobileMenu');
+hamburger?.addEventListener('click', () => {
+    hamburger.classList.toggle('open');
+    mobileMenu.classList.toggle('open');
+});
+document.querySelectorAll('.mobile-link').forEach(link => {
+    link.addEventListener('click', () => {
+        hamburger.classList.remove('open');
+        mobileMenu.classList.remove('open');
+    });
+});
+
+/* ── CALORIE CALCULATOR ──────────────────────────────────── */
+let gender = 'male', goal = 'maintain';
+
+document.querySelectorAll('.gender-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+        document.querySelectorAll('.gender-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        gender = btn.dataset.gender;
+    });
+});
+
+document.querySelectorAll('.goal-tab').forEach(btn => {
+    btn.addEventListener('click', () => {
+        document.querySelectorAll('.goal-tab').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        goal = btn.dataset.goal;
+    });
+});
+
+document.getElementById('calcBtn')?.addEventListener('click', () => {
+    const age = +document.getElementById('calcAge').value;
+    const weight = +document.getElementById('calcWeight').value;
+    const height = +document.getElementById('calcHeight').value;
+    const activity = +document.getElementById('calcActivity').value;
+    if (!age || !weight || !height) return;
+
+    const bmr = gender === 'male'
+        ? 10 * weight + 6.25 * height - 5 * age + 5
+        : 10 * weight + 6.25 * height - 5 * age - 161;
+
+    let tdee = Math.round(bmr * activity);
+    if (goal === 'lose') tdee -= 500;
+    if (goal === 'gain') tdee += 300;
+
+    const protein = Math.round(tdee * 0.30 / 4);
+    const carbs = Math.round(tdee * 0.50 / 4);
+    const fat = Math.round(tdee * 0.20 / 9);
+
+    document.getElementById('calcResult').innerHTML = `
+        <div class="result-content">
+            <div class="result-calories">
+                <div class="result-cal-num">${tdee.toLocaleString()}</div>
+                <div class="result-cal-label">calories / day</div>
+            </div>
+            <div class="result-macros">
+                <div class="result-macro-row">
+                    <span class="result-macro-name">Protein</span>
+                    <div class="result-bar"><div class="result-bar-fill rb-protein" style="width:30%"></div></div>
+                    <span class="result-macro-grams">${protein}g</span>
+                </div>
+                <div class="result-macro-row">
+                    <span class="result-macro-name">Carbs</span>
+                    <div class="result-bar"><div class="result-bar-fill rb-carbs" style="width:50%"></div></div>
+                    <span class="result-macro-grams">${carbs}g</span>
+                </div>
+                <div class="result-macro-row">
+                    <span class="result-macro-name">Fats</span>
+                    <div class="result-bar"><div class="result-bar-fill rb-fat" style="width:20%"></div></div>
+                    <span class="result-macro-grams">${fat}g</span>
+                </div>
+            </div>
+            <p class="result-note">Based on your ${goal === 'maintain' ? 'maintenance' : goal === 'lose' ? 'weight loss' : 'muscle gain'} goal.</p>
+        </div>`;
+    document.getElementById('ringKcal').textContent = tdee.toLocaleString();
+});
+
+
 
 /* ── UI ELEMENTS ─────────────────────────────────────────── */
 const dropZone = document.getElementById('dropZone');
